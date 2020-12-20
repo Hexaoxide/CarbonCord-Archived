@@ -1,0 +1,5 @@
+rootProject.name = 'CarbonCord'
+include 'CarbonCord-Common'
+include 'CarbonCord-API'
+include 'CarbonCord-Bukkit'
+

@@ -1,0 +1,84 @@
+import java.nio.charset.StandardCharsets
+
+plugins {
+  id 'com.github.johnrengelman.shadow' version '6.1.0'
+  id 'net.minecrell.plugin-yml.bukkit' version '0.3.0'
+}
+
+description = 'CarbonCord-Bukkit'
+
+dependencies {
+  implementation project(":CarbonCord-Common")
+
+  // Server
+  compileOnly "com.destroystokyo.paper:paper-api:${vers['paper-api']}"
+
+  // Config
+  implementation "org.spongepowered:configurate-yaml:${vers['configurate']}"
+  implementation "org.spongepowered:configurate-hocon:${vers['configurate']}"
+  implementation "org.yaml:snakeyaml:${vers['snakeyaml']}"
+
+  // Commands
+  implementation "cloud.commandframework:cloud-paper:${vers['cloud']}"
+
+  // Plugins
+  compileOnly "me.clip:placeholderapi:${vers['placeholder-api']}"
+}
+
+// Generates plugin.yml automatically
+bukkit {
+  name = "CarbonCord"
+  version = rootProject.version
+  main = 'io.github.underscore11code.carboncord.bukkit.CarbonCordBukkit'
+  apiVersion = '1.13'
+  author = 'Underscore11'
+  depend = ['CarbonChat']
+}
+
+checkstyle {
+  def configRoot = new File(rootProject.projectDir, '.checkstyle')
+  toolVersion = vers['checkstyle']
+  configDirectory = configRoot
+  configProperties = [basedir: configRoot.getAbsolutePath()]
+}
+
+// Set output directory and encoding
+tasks.withType(JavaCompile) {
+  options.encoding = StandardCharsets.UTF_8.name()
+  options.compilerArgs += ['-Xlint:all']
+}
+
+// Automatically shadowJar when building
+tasks.build.dependsOn tasks.shadowJar
+
+// Output a single jar
+shadowJar {
+  minimize()
+  archiveFileName.set(project.description + "-" + project.property('projectVersion') + ".jar")
+  destinationDirectory = rootProject.getBuildDir()
+  relocate("org.yaml", "io.github.underscore11code.carboncord.libs.org.yaml")
+  relocate("org.spongepowered.configurate", "io.github.underscore11code.carboncord.libs.configurate")
+  relocate("org.checkerframework", "io.github.underscore11code.carboncord.libs.checkerframework")
+  relocate("org.slf4j", "io.github.underscore11code.carboncord.libs.slf4j")
+  relocate("io.leangen.geantyref", "io.github.underscore11code.carboncord.libs.typereference")
+  relocate("cloud.commandframework", "io.github.underscore11code.carboncord.libs.cloud")
+}
+
+jar {
+  archiveFileName.set(project.description + "-" + project.property('projectVersion') + ".jar")
+}
+
+//// Automatically relocate all shaded dependencies
+//import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
+//
+//task relocateShadowJar(type: ConfigureShadowRelocation) {
+//  target = tasks.shadowJar
+//  prefix = "net.draycia.carbon.libs" // Default value is "shadow"
+//}
+//
+//tasks.shadowJar.dependsOn tasks.relocateShadowJar
+
+// Cleanup custom output directory on clean task
+clean.doFirst {
+  delete "$rootDir/build/bundled"
+}

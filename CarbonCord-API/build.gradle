@@ -1,0 +1,20 @@
+plugins {
+  id 'java-library'
+}
+
+description 'CarbonCord-API'
+
+dependencies {
+  api "org.checkerframework:checker-qual:${vers['checker-qual']}"
+
+  api("net.kyori:event-api:${vers['kyori-event-api']}")
+  api("net.kyori:registry:${vers['kyori-registry']}")
+
+  api "cloud.commandframework:cloud-core:${vers['cloud']}"
+
+  api "org.spongepowered:configurate-core:${vers['configurate']}"
+
+  compileOnlyApi "org.slf4j:slf4j-api:${vers['slf4j-api']}"
+
+  compileOnlyApi "net.luckperms:api:${vers['luckperms-api']}"
+}
