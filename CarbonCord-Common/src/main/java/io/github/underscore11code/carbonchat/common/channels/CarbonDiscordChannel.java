@@ -10,7 +10,10 @@ import io.github.underscore11code.carboncord.api.events.misc.CarbonCordEvents;
 import net.draycia.carbon.api.CarbonChatProvider;
 import net.draycia.carbon.api.channels.ChatChannel;
 import net.draycia.carbon.api.users.PlayerUser;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
+import net.luckperms.api.model.group.Group;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.NotNull;
 
 public class CarbonDiscordChannel implements DiscordChannel {
@@ -51,7 +54,7 @@ public class CarbonDiscordChannel implements DiscordChannel {
   @Override
   public void handleFromCarbon(final @NotNull PlayerUser user, final @NotNull String message) {
     // Fire off an event
-    final DiscordFormatEvent discordFormatEvent = new DiscordFormatEvent(user, this, /*todo*/"**<username>**: <message>", message);
+    final DiscordFormatEvent discordFormatEvent = new DiscordFormatEvent(user, this, this.format(user), message);
     CarbonCordEvents.post(discordFormatEvent);
     if (discordFormatEvent.cancelled() || discordFormatEvent.message().equals("")) {
       CarbonCordProvider.carbonCord().logger().debug("Not handling message {} because the IngamePreFormatEvent was cancelled.", message);
@@ -59,8 +62,11 @@ public class CarbonDiscordChannel implements DiscordChannel {
     }
 
     final String finalMessage = PlaceholderUtil.setPlaceholders(discordFormatEvent.format(),
+      "nickname", user.nickname(),
+      "displayname", user.displayName(),
       "username", user.name(),
-      "message", discordFormatEvent.message());
+      "phase", Long.toString(System.currentTimeMillis() % 25),
+      "message", message);
 
     this.textChannel().sendMessage(finalMessage).queue(discordMessage -> {
       CarbonCordEvents.post(new DiscordPostMessageEvent(user, discordMessage, this, finalMessage, discordFormatEvent.format()));
@@ -75,6 +81,26 @@ public class CarbonDiscordChannel implements DiscordChannel {
   @Override
   public void channelOptions(final @NotNull DiscordChannelOptions channelOptions) {
     this.channelOptions = channelOptions;
+  }
+
+  @Override
+  public @NonNull String format(@NonNull final PlayerUser playerUser) {
+    for (final Group group : playerUser.groups()) {
+      final String groupFormat = this.channelOptions().formats().get(group.getFriendlyName());
+      if (groupFormat != null) {
+        return groupFormat;
+      }
+    }
+    final String defaultFormat = this.channelOptions().formats().get(this.channelOptions().defaultFormatName());
+    if (defaultFormat != null) {
+      return defaultFormat;
+    }
+    throw new IllegalStateException("No format could be found for user");
+  }
+
+  @Override
+  public @NotNull String format(@NonNull final Member member) {
+    return /*todo*/"";
   }
 
   public static class UnknownChannelException extends IllegalArgumentException {
