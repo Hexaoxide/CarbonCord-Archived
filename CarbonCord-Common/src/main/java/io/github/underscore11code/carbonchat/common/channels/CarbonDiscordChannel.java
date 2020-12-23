@@ -1,11 +1,17 @@
 package io.github.underscore11code.carbonchat.common.channels;
 
+import io.github.underscore11code.carbonchat.common.util.PlaceholderUtil;
 import io.github.underscore11code.carboncord.api.CarbonCordProvider;
 import io.github.underscore11code.carboncord.api.channels.DiscordChannel;
 import io.github.underscore11code.carboncord.api.config.DiscordChannelOptions;
+import io.github.underscore11code.carboncord.api.events.DiscordFormatEvent;
+import io.github.underscore11code.carboncord.api.events.DiscordPostMessageEvent;
+import io.github.underscore11code.carboncord.api.events.misc.CarbonCordEvents;
 import net.draycia.carbon.api.CarbonChatProvider;
 import net.draycia.carbon.api.channels.ChatChannel;
+import net.draycia.carbon.api.users.PlayerUser;
 import net.dv8tion.jda.api.entities.TextChannel;
+import org.jetbrains.annotations.NotNull;
 
 public class CarbonDiscordChannel implements DiscordChannel {
   private DiscordChannelOptions channelOptions;
@@ -15,7 +21,7 @@ public class CarbonDiscordChannel implements DiscordChannel {
   }
 
   @Override
-  public TextChannel textChannel() {
+  public @NotNull TextChannel textChannel() {
     try {
       final TextChannel textChannel = CarbonCordProvider.carbonCord().jda().getTextChannelById(this.channelOptions.discordChannelId());
       if (textChannel == null) {
@@ -29,7 +35,7 @@ public class CarbonDiscordChannel implements DiscordChannel {
   }
 
   @Override
-  public ChatChannel chatChannel() {
+  public @NotNull ChatChannel chatChannel() {
     try {
       final ChatChannel chatChannel = CarbonChatProvider.carbonChat().channelRegistry().get(this.channelOptions.carbonChannelKey());
       if (chatChannel == null) {
@@ -43,12 +49,31 @@ public class CarbonDiscordChannel implements DiscordChannel {
   }
 
   @Override
-  public DiscordChannelOptions channelOptions() {
+  public void handleFromCarbon(final @NotNull PlayerUser user, final @NotNull String message) {
+    // Fire off an event
+    final DiscordFormatEvent discordFormatEvent = new DiscordFormatEvent(user, this, /*todo*/"**<username>**: <message>", message);
+    CarbonCordEvents.post(discordFormatEvent);
+    if (discordFormatEvent.cancelled() || discordFormatEvent.message().equals("")) {
+      CarbonCordProvider.carbonCord().logger().debug("Not handling message {} because the IngamePreFormatEvent was cancelled.", message);
+      return;
+    }
+
+    final String finalMessage = PlaceholderUtil.setPlaceholders(discordFormatEvent.format(),
+      "username", user.name(),
+      "message", discordFormatEvent.message());
+
+    this.textChannel().sendMessage(finalMessage).queue(discordMessage -> {
+      CarbonCordEvents.post(new DiscordPostMessageEvent(user, discordMessage, this, finalMessage, discordFormatEvent.format()));
+    });
+  }
+
+  @Override
+  public @NotNull DiscordChannelOptions channelOptions() {
     return this.channelOptions;
   }
 
   @Override
-  public void channelOptions(final DiscordChannelOptions channelOptions) {
+  public void channelOptions(final @NotNull DiscordChannelOptions channelOptions) {
     this.channelOptions = channelOptions;
   }
 
