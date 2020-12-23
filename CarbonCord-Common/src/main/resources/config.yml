@@ -1,0 +1,11 @@
+# Token to log into Discord with. See our installation instructions at <link>. | todo comment
+# !!! The token is what allows us to log into the bot account !!!
+# !!!      **DO NOT SHARE IT UNDER ANY CIRCUMSTANCES**        !!!
+bot-token: "lalala"
+
+# todo comments
+discord-channel-settings:
+  global:
+    carbon-channel-key: "global"
+    discord-channel-id: "00000000000000"
+    key: ""

@@ -15,7 +15,7 @@ public final class CarbonCordProvider {
     CarbonCordProvider.instance = CarbonCord;
   }
 
-  public static @NonNull CarbonCord CarbonCord() {
+  public static @NonNull CarbonCord carbonCord() {
     if (CarbonCordProvider.instance == null) {
       throw new IllegalStateException("CarbonCord not initialized!"); // LuckPerms design go brrrr
     }

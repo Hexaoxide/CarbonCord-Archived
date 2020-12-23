@@ -62,6 +62,8 @@ shadowJar {
   relocate("org.slf4j", "io.github.underscore11code.carboncord.libs.slf4j")
   relocate("io.leangen.geantyref", "io.github.underscore11code.carboncord.libs.typereference")
   relocate("cloud.commandframework", "io.github.underscore11code.carboncord.libs.cloud")
+
+  relocate("net.kyori", "net.draycia.carbon.libs.kyori") // Hacky workaround for relocation stuff. Whatever, it works.
 }
 
 jar {
