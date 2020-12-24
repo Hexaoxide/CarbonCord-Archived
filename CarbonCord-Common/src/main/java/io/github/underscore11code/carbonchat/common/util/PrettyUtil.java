@@ -10,7 +10,7 @@ public final class PrettyUtil {
     Pattern.compile("[§&][abcdef1234567890lmnokr]", Pattern.CASE_INSENSITIVE);
   // The pinnacle of modern design, the Bungeecord RGB syntax: &x&F&F&F&F&F&F
   private static final Pattern BUNGEE_RGB_COLOR_CODE_REGEX =
-    Pattern.compile("[§&]x(?:[§&][abcdef1234567890]){6}", Pattern.CASE_INSENSITIVE);
+    Pattern.compile("([§&])x(?:\1[abcdef1234567890]){6}", Pattern.CASE_INSENSITIVE);
   // Sarcasm aside, the *actual* pinnacle of modern design, the Kyori &#FFFFFF
   private static final Pattern KYORI_RGB_COLOR_CODE_REGEX =
     Pattern.compile("[§&]#[abcdef1234567890lmnokr]{6}", Pattern.CASE_INSENSITIVE);
