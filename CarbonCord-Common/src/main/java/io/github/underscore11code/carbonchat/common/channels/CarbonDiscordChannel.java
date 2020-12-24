@@ -61,12 +61,14 @@ public class CarbonDiscordChannel implements DiscordChannel {
       return;
     }
 
-    final String finalMessage = PlaceholderUtil.setPlaceholders(discordFormatEvent.format(),
-      "nickname", user.nickname(),
-      "displayname", user.displayName(),
-      "username", user.name(),
-      "phase", Long.toString(System.currentTimeMillis() % 25),
-      "message", message);
+    final String finalMessage = CarbonCordProvider.carbonCord().setPlatformPlaceholders(
+      PlaceholderUtil.setPlaceholders(discordFormatEvent.format(),
+        "nickname", user.nickname(),
+        "displayname", user.displayName(),
+        "username", user.name(),
+        "phase", Long.toString(System.currentTimeMillis() % 25),
+        "message", message),
+      user);
 
     this.textChannel().sendMessage(finalMessage).queue(discordMessage -> {
       CarbonCordEvents.post(new DiscordPostMessageEvent(user, discordMessage, this, finalMessage, discordFormatEvent.format()));
@@ -84,7 +86,7 @@ public class CarbonDiscordChannel implements DiscordChannel {
   }
 
   @Override
-  public @NonNull String format(@NonNull final PlayerUser playerUser) {
+  public @NonNull String format(final @NonNull PlayerUser playerUser) {
     for (final Group group : playerUser.groups()) {
       final String groupFormat = this.channelOptions().formats().get(group.getFriendlyName());
       if (groupFormat != null) {
@@ -99,7 +101,7 @@ public class CarbonDiscordChannel implements DiscordChannel {
   }
 
   @Override
-  public @NotNull String format(@NonNull final Member member) {
+  public @NotNull String format(final @NonNull Member member) {
     return /*todo*/"";
   }
 

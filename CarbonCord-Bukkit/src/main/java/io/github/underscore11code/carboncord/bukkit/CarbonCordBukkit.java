@@ -93,6 +93,9 @@ public class CarbonCordBukkit extends JavaPlugin implements CarbonCord {
   }
 
   @Override
+  @SuppressWarnings("argument.type.incompatible")
+  // Checkstyle seems to default to @NonNull if not annotated,
+  // despite PAPI supporting null OfflinePlayers
   public @NonNull String setPlatformPlaceholders(final @NonNull String text, final @Nullable PlayerUser user) {
     OfflinePlayer offlinePlayer = null;
     if (user != null) {
