@@ -27,6 +27,7 @@ public interface CarbonCord {
 
   @NonNull DiscordChannelRegistry discordChannelRegistry();
 
+  @SuppressWarnings("MethodName")
   default @NonNull String setPlatformPlaceholders(final @NonNull String text, final @Nullable PlayerUser user) {
     return text;
   }
