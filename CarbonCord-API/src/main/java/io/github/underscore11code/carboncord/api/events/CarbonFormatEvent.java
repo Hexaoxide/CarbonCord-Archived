@@ -5,6 +5,9 @@ import io.github.underscore11code.carboncord.api.events.misc.CarbonCordEvent;
 import net.dv8tion.jda.api.entities.Member;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+/**
+ * Event for formatting a message Discord -> Carbon
+ */
 public class CarbonFormatEvent implements CarbonCordEvent {
   private boolean cancelled = false;
   private final @NonNull Member member;

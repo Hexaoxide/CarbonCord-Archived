@@ -19,8 +19,4 @@ public final class PlaceholderUtil {
 
     return temp;
   }
-
-  public static String setPapi(final @NonNull String message) {
-    return message; // TODO
-  }
 }

@@ -70,15 +70,15 @@ public class CarbonDiscordChannel implements DiscordChannel {
       return;
     }
 
-    final String finalMessage = PrettyUtil.stripColorCodes(CarbonCordProvider.carbonCord().setPlatformPlaceholders(
+    final String finalMessage = PrettyUtil.stripColorCodes(
       PlaceholderUtil.setPlaceholders(discordFormatEvent.format(),
         "nickname", user.nickname(),
         "displayname", user.displayName(),
         "username", user.name(),
         "phase", Long.toString(System.currentTimeMillis() % 25),
-        "message", discordFormatEvent.message()),
-      user
-    ));
+        "message", discordFormatEvent.message()
+      )
+    );
 
     this.textChannel().sendMessage(finalMessage).queue(discordMessage -> {
       CarbonCordEvents.post(new DiscordPostMessageEvent(user, discordMessage, this, finalMessage, discordFormatEvent.format()));
@@ -100,15 +100,13 @@ public class CarbonDiscordChannel implements DiscordChannel {
       return;
     }
 
-    String finalMessage = PlaceholderUtil.setPlaceholders(
+    final String finalMessage = PlaceholderUtil.setPlaceholders(
       carbonFormatEvent.format(),
       "nickname", member.getEffectiveName(),
       "username", member.getUser().getName(),
       "tag", member.getUser().getAsTag(),
       "message", carbonFormatEvent.message()
     );
-
-    finalMessage = CarbonCordProvider.carbonCord().setPlatformPlaceholders(finalMessage, null);
 
     final Component component = MiniMessage.get().parse(finalMessage);
 

@@ -11,18 +11,16 @@ import io.github.underscore11code.carboncord.api.CarbonCord;
 import io.github.underscore11code.carboncord.api.CarbonCordProvider;
 import io.github.underscore11code.carboncord.api.channels.DiscordChannelRegistry;
 import io.github.underscore11code.carboncord.api.config.CarbonCordSettings;
-import me.clip.placeholderapi.PlaceholderAPI;
+import io.github.underscore11code.carboncord.bukkit.listeners.PlaceholderAPIListener;
 import net.draycia.carbon.api.CarbonChatProvider;
 import net.draycia.carbon.api.users.CarbonUser;
 import net.draycia.carbon.api.users.PlayerUser;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.spongepowered.configurate.ConfigurateException;
@@ -75,6 +73,8 @@ public class CarbonCordBukkit extends JavaPlugin implements CarbonCord {
     this.channelManager = new ChannelManager(this);
 
     ListenerRegistrar.registerHandlers(this);
+    new PlaceholderAPIListener();
+
     this.logger.info("Done! Enjoy CarbonCord!");
   }
 
@@ -90,21 +90,6 @@ public class CarbonCordBukkit extends JavaPlugin implements CarbonCord {
   @Override
   public void reload() {
     this.loadConfigs();
-  }
-
-  @Override
-  @SuppressWarnings("argument.type.incompatible")
-  // Checkstyle seems to default to @NonNull if not annotated,
-  // despite PAPI supporting null OfflinePlayers
-  public @NonNull String setPlatformPlaceholders(final @NonNull String text, final @Nullable PlayerUser user) {
-    OfflinePlayer offlinePlayer = null;
-    if (user != null) {
-      offlinePlayer = this.getServer().getOfflinePlayer(user.uuid());
-      // apparently internally PAPI downcasts Players to OfflinePlayers, so even if they are online,
-      // no point fetching the associated Player
-    }
-
-    return PlaceholderAPI.setPlaceholders(offlinePlayer, text);
   }
 
   // --- Private Util etc ---
