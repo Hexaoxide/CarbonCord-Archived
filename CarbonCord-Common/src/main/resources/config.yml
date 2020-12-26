@@ -9,6 +9,8 @@ discord-channel-settings:
     carbon-channel-key: "global"
     discord-channel-id: "00000000000000"
     key: ""
-    formats:
+    to-discord-formats:
       default: "**<username>:** <message>"
+    to-carbon-formats:
+      default: "<bold><username>: </bold><message>"
     default-format-name: "default"

@@ -19,7 +19,10 @@ public class DiscordChannelOptions {
   private @NonNull String key = "default";
 
   @Setting
-  private @NonNull Map<String, String> formats = ImmutableMap.of("default", "");
+  private @NonNull Map<String, String> toDiscordFormats = ImmutableMap.of("default", "");
+
+  @Setting
+  private @NonNull Map<String, String> toCarbonFormats = ImmutableMap.of("default", "");
 
   @Setting
   private @NonNull String defaultFormatName = "";
@@ -48,12 +51,20 @@ public class DiscordChannelOptions {
     this.key = key;
   }
 
-  public Map<String, String> formats() {
-    return this.formats;
+  public Map<String, String> toDiscordFormats() {
+    return this.toDiscordFormats;
   }
 
-  public void formats(final Map<String, String> formats) {
-    this.formats = formats;
+  public void toDiscordFormats(final Map<String, String> toDiscordFormats) {
+    this.toDiscordFormats = toDiscordFormats;
+  }
+
+  public Map<String, String> toCarbonFormats() {
+    return this.toCarbonFormats;
+  }
+
+  public void toCarbonFormats(final Map<String, String> toCarbonFormats) {
+    this.toCarbonFormats = toCarbonFormats;
   }
 
   public String defaultFormatName() {

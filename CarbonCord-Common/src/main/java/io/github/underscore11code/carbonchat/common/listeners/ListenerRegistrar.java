@@ -9,5 +9,6 @@ public final class ListenerRegistrar {
 
   public static void registerHandlers(final CarbonCord carbonCord) {
     new CarbonMessageListener(carbonCord);
+    new DiscordMessageListener(carbonCord);
   }
 }

@@ -18,6 +18,8 @@ public interface DiscordChannel {
 
   void handleFromCarbon(@NonNull PlayerUser user, @NonNull String message);
 
+  void handleFromDiscord(@NonNull Member member, @NonNull String message);
+
   @NonNull String format(@NonNull PlayerUser playerUser);
 
   @NonNull String format(@NonNull Member member);

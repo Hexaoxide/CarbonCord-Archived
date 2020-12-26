@@ -10,5 +10,5 @@ dependencies {
 
   compileOnly "org.slf4j:slf4j-api:${vers['slf4j-api']}"
 
-  implementation 'ch.qos.logback:logback-classic:1.2.3' // TODO DO NOT COMMIT
+  implementation "org.slf4j:slf4j-jdk14:${vers['slf4j-jdk14']}"
 }

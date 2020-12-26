@@ -12,7 +12,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 public class DiscordFormatEvent implements CarbonCordEvent, Cancellable {
   private boolean cancelled = false;
   private final @NonNull PlayerUser user;
-  private @NonNull DiscordChannel channel;
+  private final @NonNull DiscordChannel channel;
   private @NonNull String format;
   private @NonNull String message;
 
@@ -50,10 +50,6 @@ public class DiscordFormatEvent implements CarbonCordEvent, Cancellable {
   @Override
   public void cancelled(final boolean cancelled) {
     this.cancelled = cancelled;
-  }
-
-  public void channel(final @NonNull DiscordChannel channel) {
-    this.channel = channel;
   }
 
   public void format(final @NonNull String format) {
