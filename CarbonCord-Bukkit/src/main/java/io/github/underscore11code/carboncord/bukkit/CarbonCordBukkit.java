@@ -11,6 +11,7 @@ import io.github.underscore11code.carboncord.api.CarbonCord;
 import io.github.underscore11code.carboncord.api.CarbonCordProvider;
 import io.github.underscore11code.carboncord.api.channels.DiscordChannelRegistry;
 import io.github.underscore11code.carboncord.api.config.CarbonCordSettings;
+import io.github.underscore11code.carboncord.api.misc.PlatformInfo;
 import io.github.underscore11code.carboncord.bukkit.listeners.PlaceholderAPIListener;
 import net.draycia.carbon.api.CarbonChatProvider;
 import net.draycia.carbon.api.users.CarbonUser;
@@ -19,6 +20,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.slf4j.Logger;
@@ -28,6 +30,8 @@ import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
 import javax.security.auth.login.LoginException;
 import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
 
 @SuppressWarnings("initialization.fields.uninitialized")
 public class CarbonCordBukkit extends JavaPlugin implements CarbonCord {
@@ -125,7 +129,7 @@ public class CarbonCordBukkit extends JavaPlugin implements CarbonCord {
         }
       });
 
-      CommandRegistrar.registerCommands(this.commandManager);
+      CommandRegistrar.registerCommands(this);
     } catch (final Exception e) {
       e.printStackTrace();
     }
@@ -161,5 +165,52 @@ public class CarbonCordBukkit extends JavaPlugin implements CarbonCord {
   @Override
   public @NonNull DiscordChannelRegistry discordChannelRegistry() {
     return this.channelManager.registry();
+  }
+
+  @Override
+  public @NonNull String version() {
+    return this.getDescription().getVersion();
+  }
+
+  @Override
+  public @NonNull PlatformInfo platformInfo() {
+    return new PlatformInfo() {
+      final CarbonCordBukkit cc = (CarbonCordBukkit) CarbonCordProvider.carbonCord();
+      @Override
+      public @NonNull String serverVersion() {
+        return this.cc.getServer().getVersion();
+      }
+
+      @Override
+      public @NonNull String serverBrand() {
+        return this.cc.getServer().getName();
+      }
+
+      @Override
+      public @NonNull String minecraftVersion() {
+        return this.cc.getServer().getMinecraftVersion();
+      }
+
+      @Override
+      public @NonNull Platform platform() {
+        return Platform.BUKKIT;
+      }
+
+      @Override
+      public @NonNull Map<String, String> otherInfo() {
+        final Map<String, String> info = new HashMap<>();
+        info.put("PlaceholderAPI ", this.pluginVersion("PlaceholderAPI"));
+        info.put("Luckperms ", this.pluginVersion("LuckPerms"));
+        return info;
+      }
+
+      private @NonNull String pluginVersion(final @NonNull String name) {
+        final Plugin plugin = this.cc.getServer().getPluginManager().getPlugin(name);
+        if (plugin == null) {
+          return "null";
+        }
+        return plugin.getDescription().getVersion();
+      }
+    };
   }
 }

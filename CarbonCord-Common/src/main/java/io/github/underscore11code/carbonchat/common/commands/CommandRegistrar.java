@@ -1,7 +1,6 @@
 package io.github.underscore11code.carbonchat.common.commands;
 
-import cloud.commandframework.CommandManager;
-import net.draycia.carbon.api.users.CarbonUser;
+import io.github.underscore11code.carboncord.api.CarbonCord;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 public final class CommandRegistrar {
@@ -10,7 +9,7 @@ public final class CommandRegistrar {
 
   }
 
-  public static void registerCommands(final @NonNull CommandManager<CarbonUser> commandManager) {
-
+  public static void registerCommands(final @NonNull CarbonCord carbonCord) {
+    new DebugCommand(carbonCord);
   }
 }
