@@ -26,6 +26,7 @@ subprojects {
     maven { url = 'https://oss.sonatype.org/content/groups/public/' }
     maven { url = 'https://repo.minebench.de/' } // Not sure why I need this, but it doesn't compile without it
     maven { url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/' }
+    jcenter()
 
     mavenLocal()
   }

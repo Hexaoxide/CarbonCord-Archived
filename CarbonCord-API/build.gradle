@@ -7,6 +7,10 @@ description 'CarbonCord-API'
 dependencies {
   api "org.checkerframework:checker-qual:${vers['checker-qual']}"
 
+  api 'net.dv8tion:JDA:4.2.0_223'
+
+  compileOnlyApi "net.draycia:CarbonChat-API:${vers['carbon']}"
+
   api("net.kyori:event-api:${vers['kyori-event-api']}")
   api("net.kyori:registry:${vers['kyori-registry']}")
 
