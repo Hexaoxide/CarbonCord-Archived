@@ -3,14 +3,20 @@ package io.github.underscore11code.carboncord.bukkit;
 import cloud.commandframework.CommandManager;
 import cloud.commandframework.execution.CommandExecutionCoordinator;
 import cloud.commandframework.paper.PaperCommandManager;
-import io.github.underscore11code.carbonchat.common.channels.ChannelManager;
+import io.github.underscore11code.carbonchat.common.channels.DiscordChannelManager;
+import io.github.underscore11code.carbonchat.common.channels.notifications.NotificationChannelManager;
 import io.github.underscore11code.carbonchat.common.commands.CommandRegistrar;
 import io.github.underscore11code.carbonchat.common.config.ConfigLoader;
+import io.github.underscore11code.carbonchat.common.events.ShutdownEvent;
+import io.github.underscore11code.carbonchat.common.events.StartupEvent;
 import io.github.underscore11code.carbonchat.common.listeners.ListenerRegistrar;
 import io.github.underscore11code.carboncord.api.CarbonCord;
 import io.github.underscore11code.carboncord.api.CarbonCordProvider;
 import io.github.underscore11code.carboncord.api.channels.DiscordChannelRegistry;
+import io.github.underscore11code.carboncord.api.channels.notifications.NotificationChannelRegistry;
 import io.github.underscore11code.carboncord.api.config.CarbonCordSettings;
+import io.github.underscore11code.carboncord.api.events.misc.CarbonCordEvents;
+import io.github.underscore11code.carboncord.api.misc.ForwardingBus;
 import io.github.underscore11code.carboncord.api.misc.PlatformInfo;
 import io.github.underscore11code.carboncord.bukkit.listeners.PlaceholderAPIListener;
 import net.draycia.carbon.api.CarbonChatProvider;
@@ -40,7 +46,8 @@ public class CarbonCordBukkit extends JavaPlugin implements CarbonCord {
   private JDA jda;
   private CarbonCordSettings carbonCordSettings;
   private CommandManager<CarbonUser> commandManager;
-  private ChannelManager channelManager;
+  private DiscordChannelManager discordChannelManager;
+  private NotificationChannelManager notificationChannelManager;
 
   @Override
   public void onLoad() {
@@ -64,26 +71,45 @@ public class CarbonCordBukkit extends JavaPlugin implements CarbonCord {
     try {
       this.jda = JDABuilder.createDefault(botToken)
         .addEventListeners()
-        .build();
+        .build().awaitReady();
     } catch (final LoginException e) {
       this.logger.error("FATAL: Could not log into Discord with the given BotToken!");
       this.logger.error("Ensure the BotToken is correct!");
       this.setEnabled(false);
       return;
+    } catch (final InterruptedException e) {
+      this.logger.error("FATAL: JDA interrupted while logging in!");
+      this.logger.error("This *shouldn't* be possible...");
+      this.logger.error("", e);
+      this.setEnabled(false);
+      return;
     }
+
+    ForwardingBus.carbon().safeRegister();
+    ForwardingBus.carbonCord().safeRegister();
+    ForwardingBus.JDA().safeRegister();
 
     this.setupCommands();
 
-    this.channelManager = new ChannelManager(this);
+    this.discordChannelManager = new DiscordChannelManager(this);
+    this.notificationChannelManager = new NotificationChannelManager(this);
 
     ListenerRegistrar.registerHandlers(this);
     new PlaceholderAPIListener();
+
+    CarbonCordEvents.post(new StartupEvent(this));
 
     this.logger.info("Done! Enjoy CarbonCord!");
   }
 
   @Override
   public void onDisable() {
+    CarbonCordEvents.post(new ShutdownEvent());
+
+    ForwardingBus.carbon().safeUnregister();
+    ForwardingBus.carbonCord().safeUnregister();
+    ForwardingBus.JDA().safeUnregister();
+
     if (this.jda != null) {
       this.jda.shutdown();
     }
@@ -164,7 +190,12 @@ public class CarbonCordBukkit extends JavaPlugin implements CarbonCord {
 
   @Override
   public @NonNull DiscordChannelRegistry discordChannelRegistry() {
-    return this.channelManager.registry();
+    return this.discordChannelManager.registry();
+  }
+
+  @Override
+  public @NonNull NotificationChannelRegistry notificationChannelRegistry() {
+    return this.notificationChannelManager.registry();
   }
 
   @Override

@@ -3,6 +3,7 @@ package io.github.underscore11code.carboncord.api;
 import cloud.commandframework.Command;
 import cloud.commandframework.CommandManager;
 import io.github.underscore11code.carboncord.api.channels.DiscordChannelRegistry;
+import io.github.underscore11code.carboncord.api.channels.notifications.NotificationChannelRegistry;
 import io.github.underscore11code.carboncord.api.config.CarbonCordSettings;
 import io.github.underscore11code.carboncord.api.misc.PlatformInfo;
 import net.draycia.carbon.api.users.CarbonUser;
@@ -26,6 +27,8 @@ public interface CarbonCord {
   @NonNull CommandManager<CarbonUser> commandManager();
 
   @NonNull DiscordChannelRegistry discordChannelRegistry();
+
+  @NonNull NotificationChannelRegistry notificationChannelRegistry();
 
   default Command.Builder<CarbonUser> baseCommand() {
     return this.commandManager().commandBuilder("carboncord", "ccord", "discord");

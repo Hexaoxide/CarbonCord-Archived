@@ -14,3 +14,25 @@ discord-channel-settings:
     to-carbon-formats:
       default: "<bold><username>: </bold><message>"
     default-format-name: "default"
+
+notification-channel-settings:
+  join:
+    type: "JOIN"
+    format: "**<username> joined the game**"
+    key: "join"
+    channel-id: "00000000000000"
+  leave:
+    type: "LEAVE"
+    format: "**<username> left the game**"
+    key: "leave"
+    channel-id: "00000000000000"
+  start:
+    type: "START"
+    format: "**Server has started.**"
+    key: "start"
+    channel-id: "00000000000000"
+  stop:
+    type: "STOP"
+    format: "**Server has stopped.**"
+    key: "stop"
+    channel-id: "00000000000000"

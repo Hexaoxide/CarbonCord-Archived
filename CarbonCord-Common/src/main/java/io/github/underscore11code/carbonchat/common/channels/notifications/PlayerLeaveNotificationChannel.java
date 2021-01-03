@@ -1,0 +1,30 @@
+package io.github.underscore11code.carbonchat.common.channels.notifications;
+
+import io.github.underscore11code.carbonchat.common.util.PlaceholderUtil;
+import io.github.underscore11code.carboncord.api.channels.notifications.NotificationChannel;
+import io.github.underscore11code.carboncord.api.config.NotificationChannelOptions;
+import io.github.underscore11code.carboncord.api.misc.ForwardingBus;
+import net.draycia.carbon.api.events.UserEvent;
+import org.checkerframework.checker.nullness.qual.NonNull;
+
+public class PlayerLeaveNotificationChannel extends NotificationChannel {
+  @SuppressWarnings("method.invocation.invalid")
+  public PlayerLeaveNotificationChannel(final @NonNull NotificationChannelOptions channelOptions) {
+    super(channelOptions);
+
+    ForwardingBus.carbon().eventBus().register(UserEvent.Leave.class, e -> {
+      this.textChannel().sendMessage(
+        PlaceholderUtil.setPlaceholders(this.channelOptions().format(),
+          "username", e.user().name(),
+          "displayname", e.user().displayName(),
+          "nickname", e.user().nickname()
+        )
+      ).queue();
+    });
+  }
+
+  protected static void init() {
+    NotificationChannel.typeRegistry().register("LEAVE", PlayerLeaveNotificationChannel.class);
+  }
+
+}

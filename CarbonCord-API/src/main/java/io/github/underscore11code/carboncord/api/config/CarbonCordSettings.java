@@ -37,6 +37,9 @@ public final class CarbonCordSettings {
   @Setting
   private @NonNull Map<@NonNull String, @NonNull DiscordChannelOptions> discordChannelSettings = new HashMap<>();
 
+  @Setting
+  private @NonNull Map<@NonNull String, @NonNull NotificationChannelOptions> notificationChannelSettings = new HashMap<>();
+
   public @NonNull String botToken() {
     return this.botToken;
   }
@@ -45,4 +48,7 @@ public final class CarbonCordSettings {
     return this.discordChannelSettings;
   }
 
+  public @NonNull Map<@NonNull String, @NonNull NotificationChannelOptions> notificationChannelSettings() {
+    return this.notificationChannelSettings;
+  }
 }
