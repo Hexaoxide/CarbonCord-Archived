@@ -22,5 +22,4 @@ public final class CarbonCordProvider {
 
     return CarbonCordProvider.instance;
   }
-  
 }

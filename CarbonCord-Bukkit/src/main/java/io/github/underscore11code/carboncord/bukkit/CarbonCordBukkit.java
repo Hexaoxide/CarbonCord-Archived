@@ -131,7 +131,7 @@ public class CarbonCordBukkit extends JavaPlugin implements CarbonCord {
       final ConfigLoader<YamlConfigurationLoader> loader = new ConfigLoader<>(YamlConfigurationLoader.class);
 
       this.carbonCordSettings = CarbonCordSettings.loadFrom(loader.loadConfig("config.yml"));
-    } catch(final ConfigurateException ex) {
+    } catch (final ConfigurateException ex) {
       ex.printStackTrace();
     }
   }
@@ -207,6 +207,7 @@ public class CarbonCordBukkit extends JavaPlugin implements CarbonCord {
   public @NonNull PlatformInfo platformInfo() {
     return new PlatformInfo() {
       final CarbonCordBukkit cc = (CarbonCordBukkit) CarbonCordProvider.carbonCord();
+
       @Override
       public @NonNull String serverVersion() {
         return this.cc.getServer().getVersion();

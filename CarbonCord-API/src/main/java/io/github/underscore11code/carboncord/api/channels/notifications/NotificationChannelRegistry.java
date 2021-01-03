@@ -4,7 +4,11 @@ import net.kyori.registry.Registry;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 public class NotificationChannelRegistry implements Registry<String, NotificationChannel> {
   private final Map<String, NotificationChannel> channelMap = new HashMap<>();

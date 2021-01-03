@@ -8,9 +8,9 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.Iterator;
 
 public class DiscordChannelRegistry implements Registry<String, DiscordChannel> {
   private final Map<String, DiscordChannel> channelMap = new HashMap<>();
