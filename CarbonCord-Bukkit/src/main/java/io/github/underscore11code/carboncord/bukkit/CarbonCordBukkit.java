@@ -61,9 +61,9 @@ public class CarbonCordBukkit extends JavaPlugin implements CarbonCord {
     this.loadConfigs();
 
     final String botToken = this.carbonCordSettings().botToken();
-    if (botToken.equals("BOTTOKEN")) { // Default
-      this.logger.error("FATAL: BotToken is set to the default! CarbonCord **CANNOT** work without a BotToken!");
-      this.logger.error("Not sure what the BotToken is? See the installation instructions at <link>"); // TODO link
+    if (botToken.equals("")) { // Default
+      this.logger.error("FATAL: bot-token is not set! CarbonCord **CANNOT** work without a Bot Token!");
+      this.logger.error("Not sure what a Bot Token is? See the installation instructions at https://github.com/Hexaoxide/CarbonCord");
       this.setEnabled(false);
       return;
     }
@@ -73,8 +73,8 @@ public class CarbonCordBukkit extends JavaPlugin implements CarbonCord {
         .addEventListeners()
         .build().awaitReady();
     } catch (final LoginException e) {
-      this.logger.error("FATAL: Could not log into Discord with the given BotToken!");
-      this.logger.error("Ensure the BotToken is correct!");
+      this.logger.error("FATAL: Could not log into Discord with the given Bot Token!");
+      this.logger.error("Ensure the Bot Token is correct!");
       this.setEnabled(false);
       return;
     } catch (final InterruptedException e) {

@@ -1,7 +1,7 @@
-# Token to log into Discord with. See our installation instructions at <link>. | todo comment
+# Token to log into Discord with. See our installation instructions at https://github.com/Hexaoxide/CarbonCord. | todo comment
 # !!! The token is what allows us to log into the bot account !!!
 # !!!      **DO NOT SHARE IT UNDER ANY CIRCUMSTANCES**        !!!
-bot-token: "lalala"
+bot-token: ""
 
 # todo comments
 discord-channel-settings:

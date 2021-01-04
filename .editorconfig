@@ -29,5 +29,5 @@ indent_style = space
 insert_final_newline = true
 max_line_length = off
 
-end_of_line = crlf
+end_of_line = lf
 ij_java_class_count_to_use_import_on_demand = 999999999
