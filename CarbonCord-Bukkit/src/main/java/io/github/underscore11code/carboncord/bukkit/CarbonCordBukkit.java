@@ -18,6 +18,8 @@ import io.github.underscore11code.carboncord.api.config.CarbonCordSettings;
 import io.github.underscore11code.carboncord.api.events.misc.CarbonCordEvents;
 import io.github.underscore11code.carboncord.api.misc.ForwardingBus;
 import io.github.underscore11code.carboncord.api.misc.PlatformInfo;
+import io.github.underscore11code.carboncord.bukkit.listeners.AdvancementListener;
+import io.github.underscore11code.carboncord.bukkit.listeners.BukkitListener;
 import io.github.underscore11code.carboncord.bukkit.listeners.PlaceholderAPIListener;
 import net.draycia.carbon.api.CarbonChatProvider;
 import net.draycia.carbon.api.users.CarbonUser;
@@ -37,7 +39,9 @@ import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 import javax.security.auth.login.LoginException;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 @SuppressWarnings("initialization.fields.uninitialized")
 public class CarbonCordBukkit extends JavaPlugin implements CarbonCord {
@@ -48,6 +52,7 @@ public class CarbonCordBukkit extends JavaPlugin implements CarbonCord {
   private CommandManager<CarbonUser> commandManager;
   private DiscordChannelManager discordChannelManager;
   private NotificationChannelManager notificationChannelManager;
+  private Set<BukkitListener> bukkitListeners = new HashSet<>();
 
   @Override
   public void onLoad() {
@@ -96,6 +101,7 @@ public class CarbonCordBukkit extends JavaPlugin implements CarbonCord {
 
     ListenerRegistrar.registerHandlers(this);
     new PlaceholderAPIListener();
+    this.bukkitListeners.add(new AdvancementListener(this));
 
     CarbonCordEvents.post(new StartupEvent(this));
 
@@ -109,6 +115,7 @@ public class CarbonCordBukkit extends JavaPlugin implements CarbonCord {
     ForwardingBus.carbon().safeUnregister();
     ForwardingBus.carbonCord().safeUnregister();
     ForwardingBus.JDA().safeUnregister();
+    this.bukkitListeners.forEach(BukkitListener::unregister);
 
     if (this.jda != null) {
       this.jda.shutdown();

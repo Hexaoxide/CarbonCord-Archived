@@ -25,6 +25,7 @@ public class NotificationChannelManager {
     PlayerLeaveNotificationChannel.init();
     ServerStartNotificationChannel.init();
     ServerStopNotificationChannel.init();
+    AdvancementNotificationChannel.init();
 
     this.loadChannels();
   }

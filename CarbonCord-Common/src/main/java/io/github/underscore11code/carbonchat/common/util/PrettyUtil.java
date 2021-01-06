@@ -2,7 +2,9 @@ package io.github.underscore11code.carbonchat.common.util;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+import java.util.Arrays;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public final class PrettyUtil {
   // Legacy &4-style codes
@@ -27,5 +29,17 @@ public final class PrettyUtil {
     temp = KYORI_RGB_COLOR_CODE_REGEX.matcher(temp).replaceAll("");
 
     return temp;
+  }
+
+  /**
+   * Converts from "THIS_FORMAT" to "This Format"
+   * @param original Enum-style name
+   * @return Pretty "human-friendly" name
+   */
+  // https://github.com/DiscordSRV/DiscordSRV/blob/8276d7905ab0cbca41b049b1863002d7d4a35c38/src/main/java/github/scarsz/discordsrv/util/PrettyUtil.java#L84-L90
+  public static @NonNull String prettyEnum(final @NonNull String original) {
+    return Arrays.stream(original.toLowerCase().split("_"))
+      .map(s -> s.substring(0, 1).toUpperCase() + s.substring(1))
+      .collect(Collectors.joining(" "));
   }
 }

@@ -36,3 +36,8 @@ notification-channel-settings:
     format: "**Server has stopped.**"
     key: "stop"
     channel-id: "00000000000000"
+  advancement:
+    type: "ADVANCEMENT"
+    format: "**<username> made the <advancement> advancement!**"
+    key: "stop"
+    channel-id: "00000000000000"
