@@ -37,7 +37,7 @@ public class DiscordMessageListener extends ListenerAdapter {
     }
 
     for (final DiscordChannel discordChannel : discordChannels) {
-      discordChannel.handleFromDiscord(e.getMember(), e.getMessage().getContentRaw());
+      discordChannel.handleFromDiscord(e.getMember(), e.getMessage().getContentDisplay());
     }
   }
 }
