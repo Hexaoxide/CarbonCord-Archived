@@ -2,9 +2,12 @@ package io.github.underscore11code.carbonchat.common.listeners;
 
 import io.github.underscore11code.carboncord.api.CarbonCord;
 import io.github.underscore11code.carboncord.api.channels.DiscordChannel;
+import io.github.underscore11code.carboncord.api.misc.ForwardingBus;
 import net.draycia.carbon.api.events.PreChatFormatEvent;
 import net.draycia.carbon.api.events.misc.CarbonEvents;
+import net.kyori.event.EventSubscriber;
 import net.kyori.event.PostOrders;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.Set;
 
@@ -15,7 +18,7 @@ public class CarbonMessageListener {
   public CarbonMessageListener(final CarbonCord carbonCord) {
     this.carbonCord = carbonCord;
 
-    CarbonEvents.register(PreChatFormatEvent.class, PostOrders.LAST, false, this::onCarbonMessage);
+    ForwardingBus.carbon().register(PreChatFormatEvent.class, PostOrders.LAST, false, this::onCarbonMessage);
   }
 
   private void onCarbonMessage(final PreChatFormatEvent e) {

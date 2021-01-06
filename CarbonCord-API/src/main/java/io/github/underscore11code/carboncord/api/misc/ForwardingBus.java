@@ -13,6 +13,8 @@ import net.kyori.event.SimpleEventBus;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.function.Consumer;
+
 /**
  * Simple event bus that forwards on events from another event bus. Intended for allowing
  * easy reloadability of classes with many instances
@@ -25,12 +27,12 @@ public abstract class ForwardingBus<E> {
     private final EventSubscriber<CarbonEvent> subscriber = event -> this.eventBus().post(event);
 
     @Override
-    public void register() {
+    public void subscribeToSource() {
       CarbonEvents.register(carbon().clazz(), this.subscriber);
     }
 
     @Override
-    public void unregister() {
+    public void unsubscribeFromSource() {
       CarbonEvents.unregister(this.subscriber);
     }
   };
@@ -39,12 +41,12 @@ public abstract class ForwardingBus<E> {
     private final EventSubscriber<CarbonCordEvent> subscriber = event -> this.eventBus().post(event);
 
     @Override
-    public void register() {
+    public void subscribeToSource() {
       CarbonCordEvents.register(carbonCord().clazz(), this.subscriber);
     }
 
     @Override
-    public void unregister() {
+    public void unsubscribeFromSource() {
       CarbonCordEvents.unregister(this.subscriber);
     }
   };
@@ -84,16 +86,35 @@ public abstract class ForwardingBus<E> {
     return this.clazz;
   }
 
-  public void safeRegister() {
+  public <C extends E> void register(final @NonNull Class<C> clazz, final int priority, final boolean consumeCancelled, final @NonNull Consumer<C> consumer) {
+    eventBus.register(clazz, new EventSubscriber<C>() {
+      @Override
+      public int postOrder() {
+        return priority;
+      }
+
+      @Override
+      public boolean consumeCancelledEvents() {
+        return consumeCancelled;
+      }
+
+      @Override
+      public void invoke(final @NonNull C event) {
+        consumer.accept(event);
+      }
+    });
+  }
+
+  public void safeSubscribeToSource() {
     if (!this.registered) {
-      this.register();
+      this.subscribeToSource();
       this.registered = true;
     }
   }
 
-  public void safeUnregister() {
+  public void safeUnsubscribeFromSource() {
     if (this.registered) {
-      this.unregister();
+      this.unsubscribeFromSource();
       this.registered = false;
     }
   }
@@ -101,12 +122,12 @@ public abstract class ForwardingBus<E> {
   /**
    * Registers this ForwardingBus with the associated source event bus
    */
-  public abstract void register();
+  public abstract void subscribeToSource();
 
   /**
    * Unregisters this ForwardingBus with the associated source event bus
    */
-  public abstract void unregister();
+  public abstract void unsubscribeFromSource();
 
   private static final class JDAForwardingBus extends ForwardingBus<GenericEvent> implements EventListener {
     JDAForwardingBus() {
@@ -114,12 +135,12 @@ public abstract class ForwardingBus<E> {
     }
 
     @Override
-    public void register() {
+    public void subscribeToSource() {
       CarbonCordProvider.carbonCord().jda().addEventListener(this);
     }
 
     @Override
-    public void unregister() {
+    public void unsubscribeFromSource() {
       CarbonCordProvider.carbonCord().jda().removeEventListener(this);
     }
 

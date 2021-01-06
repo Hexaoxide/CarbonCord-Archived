@@ -90,9 +90,9 @@ public class CarbonCordBukkit extends JavaPlugin implements CarbonCord {
       return;
     }
 
-    ForwardingBus.carbon().safeRegister();
-    ForwardingBus.carbonCord().safeRegister();
-    ForwardingBus.JDA().safeRegister();
+    ForwardingBus.carbon().safeSubscribeToSource();
+    ForwardingBus.carbonCord().safeSubscribeToSource();
+    ForwardingBus.JDA().safeSubscribeToSource();
 
     this.setupCommands();
 
@@ -112,9 +112,9 @@ public class CarbonCordBukkit extends JavaPlugin implements CarbonCord {
   public void onDisable() {
     CarbonCordEvents.post(new ShutdownEvent());
 
-    ForwardingBus.carbon().safeUnregister();
-    ForwardingBus.carbonCord().safeUnregister();
-    ForwardingBus.JDA().safeUnregister();
+    ForwardingBus.carbon().safeUnsubscribeFromSource();
+    ForwardingBus.carbonCord().safeUnsubscribeFromSource();
+    ForwardingBus.JDA().safeUnsubscribeFromSource();
     this.bukkitListeners.forEach(BukkitListener::unregister);
 
     if (this.jda != null) {
