@@ -11,7 +11,7 @@ public class AdvancementEvent implements CarbonCordEvent {
   private final PlayerUser user;
   private final String advancementName;
 
-  public AdvancementEvent(final @NonNull PlayerUser user, @NonNull final String advancementName) {
+  public AdvancementEvent(final @NonNull PlayerUser user, final @NonNull String advancementName) {
     this.user = user;
     this.advancementName = advancementName;
   }

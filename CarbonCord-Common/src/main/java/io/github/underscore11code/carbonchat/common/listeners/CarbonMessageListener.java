@@ -4,10 +4,7 @@ import io.github.underscore11code.carboncord.api.CarbonCord;
 import io.github.underscore11code.carboncord.api.channels.DiscordChannel;
 import io.github.underscore11code.carboncord.api.misc.ForwardingBus;
 import net.draycia.carbon.api.events.PreChatFormatEvent;
-import net.draycia.carbon.api.events.misc.CarbonEvents;
-import net.kyori.event.EventSubscriber;
 import net.kyori.event.PostOrders;
-import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.Set;
 

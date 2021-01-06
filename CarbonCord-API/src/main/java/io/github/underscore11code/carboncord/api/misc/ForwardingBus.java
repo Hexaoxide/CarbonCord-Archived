@@ -87,7 +87,7 @@ public abstract class ForwardingBus<E> {
   }
 
   public <C extends E> void register(final @NonNull Class<C> clazz, final int priority, final boolean consumeCancelled, final @NonNull Consumer<C> consumer) {
-    eventBus.register(clazz, new EventSubscriber<C>() {
+    this.eventBus.register(clazz, new EventSubscriber<C>() {
       @Override
       public int postOrder() {
         return priority;
