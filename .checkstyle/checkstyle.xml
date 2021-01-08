@@ -101,9 +101,6 @@
     <module name="HideUtilityClassConstructor"/>
     <module name="FinalClass"/>
 
-    <!-- no local variable type annotations -->
-    <module name="NoLvTypeAnnotations"/>
-
     <!-- braces and parentheses on block statements on same line -->
     <module name="LeftCurly"/>
     <module name="RightCurly">
