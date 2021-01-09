@@ -1,7 +1,7 @@
 package io.github.underscore11code.carbonchat.common.channels;
 
-import io.github.underscore11code.carbonchat.common.util.PlaceholderUtil;
-import io.github.underscore11code.carbonchat.common.util.PrettyUtil;
+import io.github.underscore11code.carboncord.api.util.PlaceholderUtil;
+import io.github.underscore11code.carboncord.api.util.PrettyUtil;
 import io.github.underscore11code.carboncord.api.CarbonCordProvider;
 import io.github.underscore11code.carboncord.api.channels.DiscordChannel;
 import io.github.underscore11code.carboncord.api.config.DiscordChannelOptions;
