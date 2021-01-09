@@ -13,6 +13,7 @@ import io.github.underscore11code.carbonchat.common.listeners.ListenerRegistrar;
 import io.github.underscore11code.carboncord.api.CarbonCord;
 import io.github.underscore11code.carboncord.api.CarbonCordProvider;
 import io.github.underscore11code.carboncord.api.channels.DiscordChannelRegistry;
+import io.github.underscore11code.carboncord.api.channels.console.ConsoleChannel;
 import io.github.underscore11code.carboncord.api.channels.notifications.NotificationChannelRegistry;
 import io.github.underscore11code.carboncord.api.config.CarbonCordSettings;
 import io.github.underscore11code.carboncord.api.events.misc.CarbonCordEvents;
@@ -20,6 +21,7 @@ import io.github.underscore11code.carboncord.api.misc.ForwardingBus;
 import io.github.underscore11code.carboncord.api.misc.PlatformInfo;
 import io.github.underscore11code.carboncord.bukkit.listeners.AdvancementListener;
 import io.github.underscore11code.carboncord.bukkit.listeners.BukkitListener;
+import io.github.underscore11code.carboncord.bukkit.listeners.LoggerListener;
 import io.github.underscore11code.carboncord.bukkit.listeners.PlaceholderAPIListener;
 import net.draycia.carbon.api.CarbonChatProvider;
 import net.draycia.carbon.api.users.CarbonUser;
@@ -53,6 +55,7 @@ public class CarbonCordBukkit extends JavaPlugin implements CarbonCord {
   private DiscordChannelManager discordChannelManager;
   private NotificationChannelManager notificationChannelManager;
   private Set<BukkitListener> bukkitListeners = new HashSet<>();
+  private ConsoleChannel consoleChannel;
 
   @Override
   public void onLoad() {
@@ -98,10 +101,13 @@ public class CarbonCordBukkit extends JavaPlugin implements CarbonCord {
 
     this.discordChannelManager = new DiscordChannelManager(this);
     this.notificationChannelManager = new NotificationChannelManager(this);
+    this.consoleChannel = new ConsoleChannel(this);
+    this.consoleChannel.start();
 
     ListenerRegistrar.registerHandlers(this);
     new PlaceholderAPIListener();
     this.bukkitListeners.add(new AdvancementListener(this));
+    new LoggerListener();
 
     CarbonCordEvents.post(new StartupEvent(this));
 
@@ -203,6 +209,11 @@ public class CarbonCordBukkit extends JavaPlugin implements CarbonCord {
   @Override
   public @NonNull NotificationChannelRegistry notificationChannelRegistry() {
     return this.notificationChannelManager.registry();
+  }
+
+  @Override
+  public @NonNull ConsoleChannel consoleChannel() {
+    return this.consoleChannel;
   }
 
   @Override

@@ -8,6 +8,7 @@ ext {
     'guava'             : '26.0-jre',
     'slf4j-api'         : '1.7.25',
     'slf4j-jdk14'       : '1.7.28',
+    'log4j'             : '2.14.0',
     'adventure'         : '4.3.0',
     'adventure-platform': '4.0.0-SNAPSHOT',
     'minimessage'       : '4.1.0-SNAPSHOT',

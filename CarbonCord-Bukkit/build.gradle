@@ -13,6 +13,9 @@ dependencies {
   // Server
   compileOnly "com.destroystokyo.paper:paper-api:${vers['paper-api']}"
 
+  // Log4j2 (Console hook)
+  compileOnly "org.apache.logging.log4j:log4j-core:${vers['log4j']}"
+
   // Config
   implementation "org.spongepowered:configurate-yaml:${vers['configurate']}"
   implementation "org.spongepowered:configurate-hocon:${vers['configurate']}"
