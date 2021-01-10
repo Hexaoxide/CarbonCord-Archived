@@ -1,6 +1,6 @@
 package io.github.underscore11code.carboncord.bukkit.listeners;
 
-import io.github.underscore11code.carbonchat.common.events.AdvancementEvent;
+import io.github.underscore11code.carboncord.common.events.AdvancementEvent;
 import io.github.underscore11code.carboncord.api.events.misc.CarbonCordEvents;
 import io.github.underscore11code.carboncord.bukkit.CarbonCordBukkit;
 import net.draycia.carbon.api.CarbonChatProvider;

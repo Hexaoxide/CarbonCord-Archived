@@ -1,4 +1,4 @@
-package io.github.underscore11code.carbonchat.common.channels.notifications;
+package io.github.underscore11code.carboncord.common.channels.notifications;
 
 import io.github.underscore11code.carboncord.api.CarbonCord;
 import io.github.underscore11code.carboncord.api.channels.notifications.NotificationChannel;

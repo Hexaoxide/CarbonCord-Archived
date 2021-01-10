@@ -1,4 +1,4 @@
-package io.github.underscore11code.carbonchat.common.channels;
+package io.github.underscore11code.carboncord.common.channels;
 
 import io.github.underscore11code.carboncord.api.CarbonCord;
 import io.github.underscore11code.carboncord.api.channels.DiscordChannel;

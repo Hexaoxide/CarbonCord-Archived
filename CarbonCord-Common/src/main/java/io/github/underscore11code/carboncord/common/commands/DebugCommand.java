@@ -1,4 +1,4 @@
-package io.github.underscore11code.carbonchat.common.commands;
+package io.github.underscore11code.carboncord.common.commands;
 
 import cloud.commandframework.context.CommandContext;
 import io.github.underscore11code.carboncord.api.CarbonCord;
