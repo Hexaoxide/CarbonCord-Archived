@@ -1,6 +1,6 @@
-package io.github.underscore11code.carbonchat.common.channels.notifications;
+package io.github.underscore11code.carboncord.common.channels.notifications;
 
-import io.github.underscore11code.carbonchat.common.events.ShutdownEvent;
+import io.github.underscore11code.carboncord.common.events.ShutdownEvent;
 import io.github.underscore11code.carboncord.api.channels.notifications.NotificationChannel;
 import io.github.underscore11code.carboncord.api.config.NotificationChannelOptions;
 import io.github.underscore11code.carboncord.api.events.misc.CarbonCordEvents;

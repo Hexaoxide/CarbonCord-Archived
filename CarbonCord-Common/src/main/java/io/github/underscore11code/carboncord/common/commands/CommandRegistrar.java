@@ -1,4 +1,4 @@
-package io.github.underscore11code.carbonchat.common.commands;
+package io.github.underscore11code.carboncord.common.commands;
 
 import io.github.underscore11code.carboncord.api.CarbonCord;
 import org.checkerframework.checker.nullness.qual.NonNull;

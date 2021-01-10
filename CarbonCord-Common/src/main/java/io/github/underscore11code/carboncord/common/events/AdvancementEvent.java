@@ -1,4 +1,4 @@
-package io.github.underscore11code.carbonchat.common.events;
+package io.github.underscore11code.carboncord.common.events;
 
 import io.github.underscore11code.carboncord.api.events.misc.CarbonCordEvent;
 import net.draycia.carbon.api.users.PlayerUser;
