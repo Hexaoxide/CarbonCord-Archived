@@ -212,6 +212,13 @@ public class CarbonCordBukkit extends JavaPlugin implements CarbonCord {
   }
 
   @Override
+  public void runConsoleCommand(final @NonNull String command) {
+    this.getServer().getScheduler().runTask(this, () ->
+      this.getServer().dispatchCommand(this.getServer().getConsoleSender(), command)
+    );
+  }
+
+  @Override
   public @NonNull ConsoleChannel consoleChannel() {
     return this.consoleChannel;
   }
