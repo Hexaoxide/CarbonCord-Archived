@@ -33,8 +33,6 @@ public interface CarbonCord {
 
   @NonNull ConsoleChannel consoleChannel();
 
-  void runConsoleCommand(String command);
-
   default Command.Builder<CarbonUser> baseCommand() {
     return this.commandManager().commandBuilder("carboncord", "ccord", "discord");
   }

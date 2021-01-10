@@ -3,6 +3,7 @@ package io.github.underscore11code.carboncord.bukkit;
 import cloud.commandframework.CommandManager;
 import cloud.commandframework.execution.CommandExecutionCoordinator;
 import cloud.commandframework.paper.PaperCommandManager;
+import io.github.underscore11code.carboncord.bukkit.channels.console.BukkitConsoleChannel;
 import io.github.underscore11code.carboncord.common.channels.DiscordChannelManager;
 import io.github.underscore11code.carboncord.common.channels.notifications.NotificationChannelManager;
 import io.github.underscore11code.carboncord.common.commands.CommandRegistrar;
@@ -101,7 +102,7 @@ public class CarbonCordBukkit extends JavaPlugin implements CarbonCord {
 
     this.discordChannelManager = new DiscordChannelManager(this);
     this.notificationChannelManager = new NotificationChannelManager(this);
-    this.consoleChannel = new ConsoleChannel(this);
+    this.consoleChannel = new BukkitConsoleChannel(this);
     this.consoleChannel.start();
 
     ListenerRegistrar.registerHandlers(this);
@@ -209,13 +210,6 @@ public class CarbonCordBukkit extends JavaPlugin implements CarbonCord {
   @Override
   public @NonNull NotificationChannelRegistry notificationChannelRegistry() {
     return this.notificationChannelManager.registry();
-  }
-
-  @Override
-  public void runConsoleCommand(final @NonNull String command) {
-    this.getServer().getScheduler().runTask(this, () ->
-      this.getServer().dispatchCommand(this.getServer().getConsoleSender(), command)
-    );
   }
 
   @Override
