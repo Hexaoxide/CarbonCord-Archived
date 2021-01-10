@@ -36,6 +36,7 @@ bukkit {
   apiVersion = '1.13'
   author = 'Underscore11'
   depend = ['CarbonChat']
+  load = 'STARTUP'
 }
 
 checkstyle {
