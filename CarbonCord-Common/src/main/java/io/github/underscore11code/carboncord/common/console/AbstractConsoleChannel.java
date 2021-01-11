@@ -50,7 +50,9 @@ public abstract class AbstractConsoleChannel extends Thread implements ConsoleCh
   }
 
   private void onMessage(final @NonNull GuildMessageReceivedEvent event) {
-    if (!event.getChannel().getId().equals(this.options().channelId()) || event.getAuthor().isBot()) return;
+    if (!event.getChannel().getId().equals(this.options().channelId()) ||
+      event.getAuthor().isBot() ||
+      !this.options().allowCommandExecution()) return;
     this.runConsoleCommand(event.getMessage().getContentRaw());
   }
 

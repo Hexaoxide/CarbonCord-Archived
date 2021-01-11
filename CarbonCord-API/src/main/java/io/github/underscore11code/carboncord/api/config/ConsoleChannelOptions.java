@@ -12,6 +12,9 @@ public class ConsoleChannelOptions {
   @Setting
   private @NonNull String format = "```[<level>|<logger-name>] <message>```";
 
+  @Setting
+  private boolean allowCommandExecution = false;
+
   public String channelId() {
     return this.channelId;
   }
@@ -26,5 +29,13 @@ public class ConsoleChannelOptions {
 
   public void format(final @NonNull String format) {
     this.format = format;
+  }
+
+  public boolean allowCommandExecution() {
+    return this.allowCommandExecution;
+  }
+
+  public void allowCommandExecution(final boolean allowCommandExecution) {
+    this.allowCommandExecution = allowCommandExecution;
   }
 }
