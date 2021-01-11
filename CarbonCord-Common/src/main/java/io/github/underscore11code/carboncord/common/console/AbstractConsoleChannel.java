@@ -3,6 +3,7 @@ package io.github.underscore11code.carboncord.common.console;
 import io.github.underscore11code.carboncord.api.CarbonCord;
 import io.github.underscore11code.carboncord.api.channels.console.ConsoleChannel;
 import io.github.underscore11code.carboncord.api.channels.console.ConsoleLine;
+import io.github.underscore11code.carboncord.api.config.ConsoleChannelOptions;
 import io.github.underscore11code.carboncord.api.misc.ForwardingBus;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -36,11 +37,11 @@ public abstract class AbstractConsoleChannel extends Thread implements ConsoleCh
       final StringBuilder sb = new StringBuilder();
       while (this.lineQueue.size() != 0 &&
         sb.length() < MAX_MESSAGE_LENGTH &&
-        sb.length() + this.lineQueue.peek().beautify().length() < MAX_MESSAGE_LENGTH) {
-        sb.append(this.lineQueue.remove().beautify());
+        sb.length() + this.lineQueue.peek().beautify(this.options().format()).length() < MAX_MESSAGE_LENGTH) {
+        sb.append(this.lineQueue.remove().beautify(this.options().format()));
       }
 
-      final TextChannel channel = this.carbonCord.jda().getTextChannelById(796921636720869396L);
+      final TextChannel channel = this.carbonCord.jda().getTextChannelById(this.options().channelId());
       if (channel != null) {
         channel.sendMessage(sb).queue();
         lastMessageMs = System.currentTimeMillis();
@@ -49,7 +50,7 @@ public abstract class AbstractConsoleChannel extends Thread implements ConsoleCh
   }
 
   private void onMessage(final @NonNull GuildMessageReceivedEvent event) {
-    if (event.getChannel().getIdLong() != 796921636720869396L || event.getAuthor().isBot()) return;
+    if (!event.getChannel().getId().equals(this.options().channelId()) || event.getAuthor().isBot()) return;
     this.runConsoleCommand(event.getMessage().getContentRaw());
   }
 
@@ -64,4 +65,8 @@ public abstract class AbstractConsoleChannel extends Thread implements ConsoleCh
   }
 
   public abstract void runConsoleCommand(final @NonNull String command);
+
+  private ConsoleChannelOptions options() {
+    return this.carbonCord.carbonCordSettings().consoleChannelOptions();
+  }
 }

@@ -1,5 +1,6 @@
 package io.github.underscore11code.carboncord.api.channels.console;
 
+import io.github.underscore11code.carboncord.api.util.PlaceholderUtil;
 import io.github.underscore11code.carboncord.api.util.PrettyUtil;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -35,11 +36,11 @@ public class ConsoleLine {
     return this.timestamp;
   }
 
-  public String beautify() {
-    String message = String.format("`[%s %s]` %s\n",
-      this.level().display(),
-      this.logger(),
-      this.message());
+  public String beautify(final @NonNull String format) {
+    String message = PlaceholderUtil.setPlaceholders(format,
+      "level", this.level().display(),
+      "logger-name", this.logger(),
+      "message", this.message());
     message = PrettyUtil.stripColorCodes(message);
     return message;
   }
