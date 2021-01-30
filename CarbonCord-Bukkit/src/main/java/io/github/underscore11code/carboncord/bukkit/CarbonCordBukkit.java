@@ -45,6 +45,7 @@ public class CarbonCordBukkit extends JavaPlugin implements CarbonCordBootstrap 
 
   @Override
   public void onDisable() {
+    this.carbonCord.disable();
     this.bukkitListeners.forEach(BukkitListener::unregister);
   }
 
@@ -81,22 +82,21 @@ public class CarbonCordBukkit extends JavaPlugin implements CarbonCordBootstrap 
 
   @Override
   public @NonNull PlatformInfo platformInfo() {
+    final CarbonCordBukkit cc = this;
     return new PlatformInfo() {
-      final CarbonCordBukkit cc = (CarbonCordBukkit) CarbonCordProvider.carbonCord();
-
       @Override
       public @NonNull String serverVersion() {
-        return this.cc.getServer().getVersion();
+        return cc.getServer().getVersion();
       }
 
       @Override
       public @NonNull String serverBrand() {
-        return this.cc.getServer().getName();
+        return cc.getServer().getName();
       }
 
       @Override
       public @NonNull String minecraftVersion() {
-        return this.cc.getServer().getMinecraftVersion();
+        return cc.getServer().getMinecraftVersion();
       }
 
       @Override
@@ -113,7 +113,7 @@ public class CarbonCordBukkit extends JavaPlugin implements CarbonCordBootstrap 
       }
 
       private @NonNull String pluginVersion(final @NonNull String name) {
-        final Plugin plugin = this.cc.getServer().getPluginManager().getPlugin(name);
+        final Plugin plugin = cc.getServer().getPluginManager().getPlugin(name);
         if (plugin == null) {
           return "null";
         }

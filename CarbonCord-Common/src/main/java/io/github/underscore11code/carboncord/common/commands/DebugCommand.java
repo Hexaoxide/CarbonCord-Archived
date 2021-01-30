@@ -2,6 +2,7 @@ package io.github.underscore11code.carboncord.common.commands;
 
 import cloud.commandframework.context.CommandContext;
 import io.github.underscore11code.carboncord.api.CarbonCord;
+import io.github.underscore11code.carboncord.api.util.PrettyUtil;
 import net.draycia.carbon.api.CarbonChatProvider;
 import net.draycia.carbon.api.users.CarbonUser;
 import net.dv8tion.jda.api.JDAInfo;
@@ -33,12 +34,12 @@ public class DebugCommand {
     components.add(kv("CarbonCord ", this.carbonCord.version()));
     components.add(kv("CarbonChat ", CarbonChatProvider.carbonChat().version()));
     components.add(kv("JDA ", JDAInfo.VERSION));
-    components.add(Component.text("Server").color(NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
+    components.add(PrettyUtil.prefixed(Component.text("Server").color(NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD)));
     components.add(kv("- Name ", this.carbonCord.platformInfo().serverBrand()));
     components.add(kv("- Version ", this.carbonCord.platformInfo().serverVersion()));
     components.add(kv("- Minecraft ", this.carbonCord.platformInfo().minecraftVersion()));
     components.add(kv("- Platform ", this.carbonCord.platformInfo().platform().name()));
-    components.add(Component.text("Other").color(NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
+    components.add(PrettyUtil.prefixed(Component.text("Other").color(NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD)));
     components.addAll(info(this.carbonCord.platformInfo().otherInfo()));
 
     final Component component = Component.join(Component.newline(), components);
@@ -46,8 +47,8 @@ public class DebugCommand {
   }
 
   private static Component kv(final String k, final String v) {
-    return Component.text(k).color(NamedTextColor.DARK_AQUA)
-      .append(Component.text(v).color(NamedTextColor.AQUA));
+    return PrettyUtil.prefixed(Component.text(k).color(NamedTextColor.DARK_AQUA)
+      .append(Component.text(v).color(NamedTextColor.AQUA).decoration(TextDecoration.BOLD, false)));
   }
 
   private static List<Component> info(final Map<String, String> info) {
