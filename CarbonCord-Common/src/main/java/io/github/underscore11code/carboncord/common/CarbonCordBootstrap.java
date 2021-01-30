@@ -13,6 +13,8 @@ public interface CarbonCordBootstrap {
    */
   void disable();
 
+  void reload();
+
   CommandManager<CarbonUser> commandManager() throws Exception;
 
   File dataFolder();

@@ -1,13 +1,19 @@
 package io.github.underscore11code.carboncord.api.util;
 
+import com.google.common.collect.ImmutableMap;
 import io.github.underscore11code.carboncord.api.CarbonCord;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.util.RGBLike;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.common.value.qual.IntRange;
 
 import java.awt.Color;
 import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -21,6 +27,16 @@ public final class PrettyUtil {
   // Sarcasm aside, the *actual* pinnacle of modern design, the Kyori &#FFFFFF
   private static final Pattern KYORI_RGB_COLOR_CODE_REGEX =
     Pattern.compile("[§&]#[abcdef1234567890lmnokr]{6}", Pattern.CASE_INSENSITIVE);
+
+  private static final Map<TextDecoration, TextDecoration.State> blankDecoration;
+
+  static {
+    final HashMap<TextDecoration, TextDecoration.State> decorations = new HashMap<>();
+    for (final TextDecoration td : EnumSet.allOf(TextDecoration.class)) {
+      decorations.put(td, TextDecoration.State.FALSE);
+    }
+    blankDecoration = ImmutableMap.copyOf(decorations);
+  }
 
   private PrettyUtil() {
 
@@ -68,6 +84,10 @@ public final class PrettyUtil {
   }
 
   public static Component prefixed(final Component component) {
-    return CarbonCord.prefix().append(component);
+    return appendBlankFormatting(CarbonCord.prefix(), component);
+  }
+
+  public static Component appendBlankFormatting(final Component c1, final Component c2) {
+    return c1.append(Component.empty().color(NamedTextColor.WHITE).decorations(blankDecoration).append(c2));
   }
 }

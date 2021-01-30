@@ -51,8 +51,13 @@ public class CarbonCordBukkit extends JavaPlugin implements CarbonCordBootstrap 
 
   @Override
   public void disable() {
-    this.carbonCord.disable();
     this.setEnabled(false);
+  }
+
+  @Override
+  public void reload() {
+    this.setEnabled(false);
+    this.setEnabled(true);
   }
 
   @Override

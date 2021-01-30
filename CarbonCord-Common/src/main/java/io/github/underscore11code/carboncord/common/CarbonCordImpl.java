@@ -93,6 +93,7 @@ public class CarbonCordImpl implements CarbonCord {
     this.logger.info("Done! Enjoy CarbonCord!");
   }
 
+  @SuppressWarnings("assignment.type.incompatible")
   public void disable() {
     CarbonCordEvents.post(new ShutdownEvent());
 
@@ -103,6 +104,12 @@ public class CarbonCordImpl implements CarbonCord {
     if (this.jda != null) {
       this.jda.shutdown();
     }
+
+    this.jda = null;
+    this.commandManager = null;
+    this.carbonCordSettings = null;
+    this.discordChannelManager = null;
+    this.notificationChannelManager = null;
   }
 
   // --- Public API ---

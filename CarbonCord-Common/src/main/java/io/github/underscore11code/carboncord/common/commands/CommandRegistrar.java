@@ -11,5 +11,6 @@ public final class CommandRegistrar {
 
   public static void registerCommands(final @NonNull CarbonCord carbonCord) {
     new DebugCommand(carbonCord);
+    new ReloadCommand(carbonCord);
   }
 }
