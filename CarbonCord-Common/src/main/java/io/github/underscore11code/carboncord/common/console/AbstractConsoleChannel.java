@@ -11,12 +11,16 @@ import net.kyori.event.PostOrders;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
-public abstract class AbstractConsoleChannel extends Thread implements ConsoleChannel {
+public abstract class AbstractConsoleChannel implements ConsoleChannel, Runnable {
   private final CarbonCord carbonCord;
   private final BlockingQueue<ConsoleLine> lineQueue = new LinkedBlockingQueue<>();
-  private boolean run = true;
+  private final ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+  private long lastMessageMs = System.currentTimeMillis();
   private static final long MAX_MESSAGE_LENGTH = 2000;
 
   @SuppressWarnings("methodref.receiver.bound.invalid")
@@ -28,24 +32,22 @@ public abstract class AbstractConsoleChannel extends Thread implements ConsoleCh
 
   @SuppressWarnings("dereference.of.nullable")
   public void run() {
-    long lastMessageMs = System.currentTimeMillis();
-    while (this.run) {
-      while (this.lineQueue.size() == 0 || System.currentTimeMillis() < lastMessageMs + 5000) {
-        if (!this.run) return;
-      }
 
-      final StringBuilder sb = new StringBuilder();
-      while (this.lineQueue.size() != 0 &&
-        sb.length() < MAX_MESSAGE_LENGTH &&
-        sb.length() + this.lineQueue.peek().beautify(this.options().format()).length() < MAX_MESSAGE_LENGTH) {
-        sb.append(this.lineQueue.remove().beautify(this.options().format()));
-      }
+    if (this.lineQueue.size() == 0 || System.currentTimeMillis() < this.lastMessageMs + 5000) {
+      return;
+    }
 
-      final TextChannel channel = this.carbonCord.jda().getTextChannelById(this.options().channelId());
-      if (channel != null) {
-        channel.sendMessage(sb).queue();
-        lastMessageMs = System.currentTimeMillis();
-      }
+    final StringBuilder sb = new StringBuilder();
+    while (this.lineQueue.size() != 0 &&
+      sb.length() < MAX_MESSAGE_LENGTH &&
+      sb.length() + this.lineQueue.peek().beautify(this.options().format()).length() < MAX_MESSAGE_LENGTH) {
+      sb.append(this.lineQueue.remove().beautify(this.options().format()));
+    }
+
+    final TextChannel channel = this.carbonCord.jda().getTextChannelById(this.options().channelId());
+    if (channel != null) {
+      channel.sendMessage(sb).queue();
+      this.lastMessageMs = System.currentTimeMillis();
     }
   }
 
@@ -62,8 +64,13 @@ public abstract class AbstractConsoleChannel extends Thread implements ConsoleCh
   }
 
   @Override
+  public void start() {
+    this.scheduledExecutorService.scheduleAtFixedRate(this, 0, 1, TimeUnit.SECONDS);
+  }
+
+  @Override
   public void shutdown() {
-    this.run = false;
+    this.scheduledExecutorService.shutdown();
   }
 
   public abstract void runConsoleCommand(final @NonNull String command);
